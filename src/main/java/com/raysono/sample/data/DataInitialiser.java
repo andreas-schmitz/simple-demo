@@ -21,7 +21,9 @@ public class DataInitialiser implements CommandLineRunner {
 				"978-0-201-61622-4|The Pragmatic Programmer|Andrew Hunt, David Thomas", "0-586-06645-4|Neuromancer|William Gibson")
 				.forEach(bookInfo -> {
 			String[] bookInfoParts = bookInfo.split("\\|");
-			repository.save(new Book(bookInfoParts[0], bookInfoParts[1], bookInfoParts[2]));
+			if (repository.findByIsbn(bookInfoParts[0]) == null) {
+				repository.save(new Book(bookInfoParts[0], bookInfoParts[1], bookInfoParts[2]));
+			}
 		});
 	}
 }
