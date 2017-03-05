@@ -1,0 +1,49 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.2.RELEASE'
+		nexusUser = project.hasProperty('propNexusUser') && propNexusUser != "" ? propNexusUser : System.properties['propNexusUser']
+		nexusPassword = project.hasProperty('propNexusPwd') && propNexusPwd != "" ? propNexusPwd : System.properties['propNexusPwd']
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
+war {
+	baseName = 'simple-demo'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven {
+		url "http://nexus.raysono.com/content/groups/public/"
+		credentials {
+			username nexusUser
+			password nexusPassword
+		}
+	}
+}
+
+configurations {
+	providedRuntime
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('com.microsoft.sqlserver:sqljdbc4:6.0')
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
