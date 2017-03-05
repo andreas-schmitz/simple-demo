@@ -5,5 +5,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "book", path = "bookinfo")
 public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
-
+	Book findByIsbn(String isbn);
 }

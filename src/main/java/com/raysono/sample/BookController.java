@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.raysono.sample.data.Book;
 import com.raysono.sample.data.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +20,17 @@ public class BookController {
 	}
 
 	@RequestMapping(path = "/books", method = RequestMethod.GET)
-	Iterable<Book> getPersons() {
+	Iterable<Book> getBooks() {
 		return repository.findAll();
 	}
 
+	@RequestMapping(path = "/book/{isbn}", method = RequestMethod.GET)
+	Book getBook(@PathVariable String isbn) {
+		return repository.findByIsbn(isbn);
+	}
+
 	@RequestMapping(path = "/book", method = RequestMethod.POST, consumes = "application/json")
-	public void addPerson(@RequestBody Book book) throws JsonProcessingException {
+	public void addBook(@RequestBody Book book) throws JsonProcessingException {
 		repository.save(book);
 	}
 
